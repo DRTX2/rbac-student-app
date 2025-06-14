@@ -12,6 +12,7 @@
             integrity="sha384-…" crossorigin="anonymous">
 </head>
 <body>
+
 <div class="container mt-4">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -93,17 +94,17 @@
     </table>
 
     <!-- Tabla de usuarios -->
-    <h2>Usuarios</h2>
+    <h2 sec:authorize="hasRole('ROLE_ADMIN')">Usuarios</h2>
     <!-- Botón que abre el modal del usuario -->
     <button
             class="btn btn-primary mb-3"
             data-bs-toggle="modal"
             data-bs-target="#userModal"
-            sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_SECRETARY')"
+            sec:authorize="hasRole('ROLE_ADMIN')"
     >
         Agregar nuevo usuario
     </button>
-    <table class="table table-striped">
+    <table class="table table-striped" sec:authorize="hasRole('ROLE_ADMIN')">
         <thead>
             <tr>
                 <th>Id</th>
@@ -157,6 +158,7 @@
                                 th:field="*{dni}"
                                 placeholder="0123456789"
                                 required>
+                        <p th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">Nombre</label>
@@ -166,7 +168,9 @@
                                 id="firstName"
                                 th:field="*{firstName}"
                                 required>
+                        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
                     </div>
+
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Apellido</label>
                         <input
@@ -175,6 +179,7 @@
                                 id="lastName"
                                 th:field="*{lastName}"
                                 required>
+                        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo</label>
@@ -184,6 +189,7 @@
                                 id="email"
                                 th:field="*{email}"
                                 required>
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label for="phoneNumber" class="form-label">Teléfono</label>
@@ -194,15 +200,18 @@
                                 th:field="*{phoneNumber}"
                                 placeholder="+5939xxxxxxx"
                                 required>
+                        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label for="address" class="form-label">Dirección</label>
-                        <textarea
+                        <input
+                                type="text"
                                 class="form-control"
                                 id="address"
-                                th:field="*{address}"
-                                rows="2">
-              </textarea>
+                                required
+                                placeholder="Ambato xxx"
+                                th:field="*{address}">
+                        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -227,7 +236,7 @@
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="editForm" method="post">
+            <form id="editForm" method="post" th:object="${editStudent}">
                 <div class="modal-header">
                     <h5 class="modal-title">Editar estudiante</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -240,27 +249,33 @@
                     <!-- Campos -->
                     <div class="mb-3">
                         <label class="form-label">Cédula</label>
-                        <input type="text" class="form-control" name="dni" readonly>
+                        <input type="text" class="form-control" th:field="*{dni}" readonly>
+                        <p th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control" name="firstName" required>
+                        <input type="text" class="form-control" th:field="*{firstName}" required>
+                        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Apellido</label>
-                        <input type="text" class="form-control" name="lastName" required>
+                        <input type="text" class="form-control" th:field="*{lastName}" required>
+                        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Correo</label>
-                        <input type="email" class="form-control" name="email" required>
+                        <input type="email" class="form-control" th:field="*{email}" required>
+                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" name="phoneNumber" required>
+                        <input type="tel" class="form-control" th:field="*{phoneNumber}" required>
+                        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger"></p>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Dirección</label>
-                        <textarea class="form-control" name="address" rows="2"></textarea>
+                        <input class="form-control" th:field="*{address}">
+                        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -289,29 +304,25 @@
                     <div class="mb-3">
                         <label class="form-label">Correo</label>
                         <input type="email" class="form-control" th:field="*{username}" required>
+                        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger"></p>
                     </div>
 
                     <!-- Contraseña -->
                     <div class="mb-3">
                         <label class="form-label">Contraseña</label>
                         <input type="password" class="form-control" th:field="*{password}" required>
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></p>
                     </div>
 
                     <!-- Roles (solo admin puede elegir) -->
-                    <div class="mb-3" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <div class="mb-3">
                         <label class="form-label">Roles</label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" th:field="*{admin}" id="admin">
-                            <label class="form-check-label" for="admin">Administrador</label>
-                        </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" th:field="*{secretary}" id="secretary">
                             <label class="form-check-label" for="secretary">Secretaria</label>
                         </div>
+                        <p th:if="${#fields.hasErrors('secretary')}" th:errors="*{secretary}" class="text-danger"></p>
                     </div>
-
-                    <!-- Si es secretaria, que el rol venga oculto -->
-                    <input type="hidden" th:field="*{secretary}" th:value="true" sec:authorize="hasRole('ROLE_SECRETARY')" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -347,8 +358,24 @@
         form.querySelector('input[name="lastName"]').value    = last;
         form.querySelector('input[name="email"]').value       = email;
         form.querySelector('input[name="phoneNumber"]').value = phone;
-        form.querySelector('textarea[name="address"]').value  = addr;
+        form.querySelector('input[name="address"]').value  = addr;
     });
+</script>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const openCreate = /*[[${openCreate}]]*/ false;
+    const openEdit = /*[[${openEdit}]]*/ false;
+    const openCreateUser =  /*[[${openCreateUser}]]*/ false;
+
+    if (openCreate) {
+        new bootstrap.Modal(document.getElementById('studentModal')).show();
+    } else if (openEdit) {
+        new bootstrap.Modal(document.getElementById('editModal')).show();
+    } else if (openCreateUser) {
+        new bootstrap.Modal(document.getElementById('userModal')).show();
+    }
+    /*]]>*/
 </script>
 
 </body>

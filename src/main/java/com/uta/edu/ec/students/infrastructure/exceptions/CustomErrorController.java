@@ -1,9 +1,7 @@
 package com.uta.edu.ec.students.infrastructure.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.ui.Model;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

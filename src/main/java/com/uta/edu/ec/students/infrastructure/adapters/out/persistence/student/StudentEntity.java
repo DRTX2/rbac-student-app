@@ -26,14 +26,14 @@ public class StudentEntity {
     @Column(name = "last_name", length =  50, nullable = false)
     private String lastName;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     @Pattern(
             regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
             message = "El correo no tiene un formato válido"
     )
     private String email;
 
-    @Column(name = "phone_number", length = 10, nullable = false)
+    @Column(name = "phone_number", length = 10, nullable = false, unique = true)
     private String phoneNumber;
 
     @Column(length = 100, nullable = false)

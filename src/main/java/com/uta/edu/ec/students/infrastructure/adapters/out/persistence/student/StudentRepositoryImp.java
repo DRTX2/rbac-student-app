@@ -51,4 +51,29 @@ public class StudentRepositoryImp implements StudentRepository {
                 .map(mapper::toStudent)
                 .toList();
     }
+
+    @Override
+    public boolean existsByDni(String dni) {
+        return studentRepositoryJpa.existsByDni(dni);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return studentRepositoryJpa.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByPhone(String phone) {
+        return studentRepositoryJpa.existsByPhoneNumber(phone);
+    }
+
+    @Override
+    public boolean existsByEmailExceptSelf(String email, String selfDni) {
+        return studentRepositoryJpa.existsByEmailAndDniNot(email, selfDni);
+    }
+
+    @Override
+    public boolean existsByPhoneExceptSelf(String phone, String selfDni) {
+        return studentRepositoryJpa.existsByPhoneNumberAndDniNot(phone, selfDni);
+    }
 }

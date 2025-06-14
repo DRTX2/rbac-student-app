@@ -39,5 +39,9 @@ public class UserRepositoryImp implements UserRepository {
         return repositoryJpa.findAll().stream().map(mapper::toUser).toList();
     }
 
+    @Override
+    public boolean existsByUsername(String username) {
+        return repositoryJpa.existsByUsername(username);
+    }
 
 }
