@@ -2,11 +2,9 @@ package com.uta.edu.ec.students.infrastructure.adapters.out.persistence.users;
 
 import com.uta.edu.ec.students.infrastructure.adapters.out.persistence.roles.RoleEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.management.relation.Role;
 import java.util.List;
 
 @Getter
