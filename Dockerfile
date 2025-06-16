@@ -1,14 +1,12 @@
-# Usa una imagen ligera de Java 17
-FROM eclipse-temurin:21-jdk-jammy
-
-# Directorio de trabajo dentro del contenedor
+# Etapa 1: Compilar con Maven
+FROM maven:3.9.5-eclipse-temurin-21 AS build
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copia el JAR al contenedor
-COPY target/students-0.0.1-SNAPSHOT.jar app.jar
-
-# Expone el puerto (Render usa el 10000 por defecto)
+# Etapa 2: Ejecutar JAR
+FROM eclipse-temurin:21-jdk-jammy
+WORKDIR /app
+COPY --from=build /app/target/students-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 10000
-
-# Ejecuta la app
 ENTRYPOINT ["java", "-jar", "app.jar"]
